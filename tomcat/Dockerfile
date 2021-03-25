@@ -19,11 +19,7 @@ VOLUME "$CATALINA_HOME/webapps"
 
 # Set timezone
 ARG TIMEZONE
-RUN apk update && apk add --no-cache --virtual .build-deps tzdata && \
-    ln -snf /usr/share/zoneinfo/$TIMEZONE /etc/localtime && \
-    echo $TIMEZONE > /etc/timezone && \
-    apk del .build-deps && rm -rf /var/cache/apk/*
 ENV TZ $TIMEZONE
-
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # Launch Tomcat
 CMD ["/usr/local/tomcat/bin/catalina.sh", "run"]
