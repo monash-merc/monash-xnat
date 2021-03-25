@@ -1,4 +1,4 @@
-FROM tomcat:7-jre8-alpine
+FROM tomcat:7.0.108-jdk8-openjdk-buster
 
 LABEL maintainer="Tom Close <tom.g.close@gmail.com>"
 
