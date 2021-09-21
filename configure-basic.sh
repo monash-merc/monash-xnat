@@ -39,9 +39,9 @@ echo "---------------------------"
 mkdir -p ./webapps
 
 if [ -z "$XNAT_VER" ]; then
-    read -p 'Please enter version of XNAT to download and install [1.7.5.6] (XNAT_VER): ' XNAT_VER
+    read -p 'Please enter version of XNAT to download and install [1.8.2] (XNAT_VER): ' XNAT_VER
     if [ -z "$XNAT_VER" ]; then
-        XNAT_VER=1.7.5.6
+        XNAT_VER=1.8.2
     fi
 else
     echo "Loaded saved value for XNAT_VER=$XNAT_VER"
@@ -73,7 +73,7 @@ echo "----------------------------"
 
 mkdir -p ./plugins
 
-CONTAINER_SERVICE_PLUGIN_VER=2.0.1
+CONTAINER_SERVICE_PLUGIN_VER=2.1.0
 SIMPLE_UPLOAD_PLUGIN_VER=2.04
 
 # Container service plugin
