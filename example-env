@@ -1,6 +1,8 @@
 SITE=xnat.monash.edu
-APP_DIR=/mnt/cinder/xnat
+BACKUP_DIR=/mnt/cinder/backups
+CINDER_DIR=/mnt/cinder/xnat
 DATA_DIR=/mnt/data/xnat
-BACKUP_DIR=/mnt/backups
+XNAT_ROOT=/data/xnat
+XNAT_HOME=/data/xnat/home
 TIMEZONE=Australia/Melbourne
 LOCALE=en_AU

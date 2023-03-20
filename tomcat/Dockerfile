@@ -1,42 +1,34 @@
-FROM tomcat:7-jre8-alpine
+FROM tomcat:9-jdk8-openjdk-buster
 
-MAINTAINER Tom Close <tom.g.close@gmail.com>
 
-ARG LOCALE
+ENV PATH $PATH:$CATALINA_HOME/bin
 
-RUN apk add --no-cache postgresql-client vim tzdata ca-certificates wget 
+ARG XNAT_HOME=${XNAT_HOME}
+ARG XNAT_ROOT=${XNAT_ROOT}
 
-# Install language pack
-RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
-    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.25-r0/glibc-2.25-r0.apk && \
-    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.25-r0/glibc-bin-2.25-r0.apk && \
-    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.25-r0/glibc-i18n-2.25-r0.apk && \
-    apk add glibc-bin-2.25-r0.apk glibc-i18n-2.25-r0.apk glibc-2.25-r0.apk
+RUN adduser --disabled-password --gecos '' xnat
 
-# Iterate through all locale and install it
-# Note that locale -a is not available in alpine linux, use `/usr/glibc-compat/bin/locale -a` instead
-COPY ./locale.md /locale.md
-RUN cat /locale.md | xargs -i /usr/glibc-compat/bin/localedef -i {} -f UTF-8 {}.UTF-8
-
-# Set locales, NOT SUPPORTED by Alpine
-ENV LANG $LOCALE.UTF-8
-ENV LANGUAGE $LOCALE.UTF-8
-ENV LC_ALL $LOCALE.UTF-8
-
-# Make directories required for XNAT
-RUN mkdir -p /data/xnat/home/config
-RUN mkdir -p /data/xnat/home/work
-RUN mkdir -p /data/xnat/archive
-RUN mkdir -p /data/xnat/prearchive
-RUN mkdir -p /data/xnat/build
-RUN mkdir -p /data/xnat/cache
-RUN mkdir -p /data/xnat/ftp
-RUN mkdir -p /data/xnat/pipeline
+RUN mkdir -p \
+        ${XNAT_HOME}/config \
+        ${XNAT_HOME}/logs \
+        ${XNAT_HOME}/plugins \
+        ${XNAT_HOME}/work  \
+        ${XNAT_ROOT}/archive \
+        ${XNAT_ROOT}/build \
+        ${XNAT_ROOT}/cache \
+        ${XNAT_ROOT}/ftp \
+        ${XNAT_ROOT}/pipeline \
+        ${XNAT_ROOT}/prearchive
 
 EXPOSE 8080
 EXPOSE 8009
+
 RUN rm -rf $CATALINA_HOME/webapps
 VOLUME "$CATALINA_HOME/webapps"
 
+# Set timezone
+ARG TIMEZONE
+ENV TZ $TIMEZONE
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # Launch Tomcat
 CMD ["/usr/local/tomcat/bin/catalina.sh", "run"]
