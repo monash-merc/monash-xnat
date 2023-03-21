@@ -7,7 +7,8 @@
 /.settings
 /WebContent
 /.env
-/certs
+*/certs/*.crt
+*/certs/*.key
 /auth
 data
 *.swp

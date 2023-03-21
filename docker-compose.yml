@@ -2,7 +2,8 @@ version: '3'
 services:
   xnat-web:
     build:
-      context: ./tomcat
+      context: tomcat
+      dockerfile: Dockerfile
       args:
         LOCALE: $LOCALE
         XNAT_ROOT: ${XNAT_ROOT}
@@ -37,7 +38,9 @@ services:
     restart: always
 
   xnat-db:
-    build: ./postgres
+    build:
+      context: postgres
+      dockerfile: Dockerfile
     expose:
       - "5432"
     volumes:
@@ -48,7 +51,9 @@ services:
       - POSTGRES_PASSWORD=password
 
   xnat-backup:
-    build: ./backup
+    build:
+      context: backup
+      dockerfile: Dockerfile
     depends_on:
       - xnat-db
     links:
@@ -59,7 +64,9 @@ services:
       - $BACKUP_DIR:/backups
 
   xnat-nginx:
-    build: ./nginx
+    build:
+      context: nginx
+      dockerfile: Dockerfile
     ports:
       - "80:80"
       - "443:443"
