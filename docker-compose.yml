@@ -79,7 +79,7 @@ services:
     volumes:
       - ./nginx/certs/cert.crt:/etc/nginx/certs/cert.crt
       - ./nginx/certs/key.key:/etc/nginx/certs/key.key
-      - ./nginx/nginx-ssl.conf:/etc/nginx/conf.d
+      - ./nginx/nginx-ssl.conf:/etc/nginx/nginx-ssl.conf
 
 
   prometheus:
