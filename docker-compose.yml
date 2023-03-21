@@ -22,7 +22,7 @@ services:
       - $CINDER_DIR/pipeline:${XNAT_ROOT}/pipeline
       - $DATA_DIR/prearchive:${XNAT_ROOT}prearchive
       - $CINDER_DIR/webapps:/usr/local/tomcat/webapps
-      - $CINDER_DIR/logs/tomcat:/opt/tomcat/logs
+      - $CINDER_DIR/logs/tomcat:/usr/local/tomcat/logs
       - ./tomcat/server.xml:/opt/tomcat/conf/server.xml
       - ./tomcat/tomcat-users.xml:/opt/tomcat/conf/tomcat-users.xml
       - ./tomcat/xnat-conf.properties:${XNAT_HOME}/config/xnat-conf.properties
@@ -79,7 +79,7 @@ services:
     volumes:
       - ./nginx/certs/cert.crt:/etc/nginx/certs/cert.crt
       - ./nginx/certs/key.key:/etc/nginx/certs/key.key
-      - ./nginx/nginx-ssl.conf:/etc/nginx/nginx.conf
+      - ./nginx/nginx-ssl.conf:/etc/nginx/conf.d
 
 
   prometheus:
