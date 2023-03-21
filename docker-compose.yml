@@ -32,8 +32,8 @@ services:
     depends_on:
       - xnat-db
     environment:
-      - CATALINA_OPTS=-Xms128m -Xmx4096m -Dxnat.home=/data/xnat/home -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000
-      - XNAT_HOME=/data/xnat/home
+      - CATALINA_OPTS=-Xms128m -Xmx4096m -Dxnat.home=${XNAT_HOME} -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000
+      - XNAT_HOME=${XNAT_HOME}
       - TZ=$TIMEZONE
     restart: always
 
@@ -76,6 +76,10 @@ services:
       - xnat-web
     environment:
       - TZ=$TIMEZONE
+    volumes:
+      - ./nginx/certs/cert.crt:/etc/nginx/certs/cert.crt
+      - ./nginx/certs/key.key:/etc/nginx/certs/key.key
+      - ./nginx/nginx-ssl.conf:/etc/nginx/nginx.conf
 
   prometheus:
     image: prom/prometheus
