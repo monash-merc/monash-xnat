@@ -1,24 +1,24 @@
 FROM tomcat:9-jdk8-openjdk-buster
 
+MAINTAINER Simon Yu (xiaoming.yu@monash.edu)
+# xnat_home=/data/xnat/home
+ARG XNAT_HOME=${XNAT_HOME}
+#xnat_root=/data/xnat
+ARG XNAT_ROOT=${XNAT_ROOT}
 
 ENV PATH $PATH:$CATALINA_HOME/bin
 
-ARG XNAT_HOME=${XNAT_HOME}
-ARG XNAT_ROOT=${XNAT_ROOT}
-
 RUN adduser --disabled-password --gecos '' xnat
 
-RUN mkdir -p \
-        ${XNAT_HOME}/config \
-        ${XNAT_HOME}/logs \
-        ${XNAT_HOME}/plugins \
-        ${XNAT_HOME}/work  \
-        ${XNAT_ROOT}/archive \
-        ${XNAT_ROOT}/build \
-        ${XNAT_ROOT}/cache \
-        ${XNAT_ROOT}/ftp \
-        ${XNAT_ROOT}/pipeline \
-        ${XNAT_ROOT}/prearchive
+RUN mkdir -p ${XNAT_HOME}/config
+
+WORKDIR ${XNAT_HOME}
+
+RUN mkdir logs plugins work
+
+WORKDIR ${XNAT_ROOT}
+
+RUN mkdir archive build cache ftp pipeline prearchive
 
 EXPOSE 8080
 EXPOSE 8009
