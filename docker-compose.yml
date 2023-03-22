@@ -15,8 +15,8 @@ services:
       - $CINDER_DIR/plugins:${XNAT_HOME}/plugins
       - $CINDER_DIR/auth:${XNAT_HOME}/auth
       - $CINDER_DIR/logs/xnat:${XNAT_HOME}/logs
-      - $DATA_DIR/archive:${XNAT_ROOT}archive
-      - $CINDER_DIR/build:${XNAT_ROOT}build
+      - $DATA_DIR/archive:${XNAT_ROOT}/archive
+      - $CINDER_DIR/build:${XNAT_ROOT}/build
       - $DATA_DIR/cache:${XNAT_ROOT}/cache
       - $DATA_DIR/ftp:${XNAT_ROOT}/ftp
       - $CINDER_DIR/pipeline:${XNAT_ROOT}/pipeline

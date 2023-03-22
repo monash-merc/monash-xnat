@@ -1,10 +1,10 @@
 FROM tomcat:9-jdk8-openjdk-buster
-
-
-ENV PATH $PATH:$CATALINA_HOME/bin
+MAINTAINER Simon Yu <xiaoming.yu@monash.edu>
 
 ARG XNAT_HOME=${XNAT_HOME}
 ARG XNAT_ROOT=${XNAT_ROOT}
+
+ENV PATH $PATH:$CATALINA_HOME/bin
 
 RUN adduser --disabled-password --gecos '' xnat
 
