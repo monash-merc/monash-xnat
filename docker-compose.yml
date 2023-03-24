@@ -49,6 +49,7 @@ services:
     environment:
       - TZ=$TIMEZONE
       - POSTGRES_PASSWORD=password
+    restart: always
 
   xnat-backup:
     build:
@@ -62,6 +63,7 @@ services:
       SETUP_CRON: "0 3 * * *"
     volumes:
       - $BACKUP_DIR:/backups
+    restart: always
 
   xnat-nginx:
     build:
@@ -80,6 +82,7 @@ services:
       - ./nginx/certs/cert.crt:/etc/nginx/certs/cert.crt
       - ./nginx/certs/key.key:/etc/nginx/certs/key.key
       - ./nginx/nginx-ssl.conf:/etc/nginx/nginx.conf
+    restart: always
 
   prometheus:
     image: prom/prometheus
@@ -93,6 +96,7 @@ services:
       - cadvisor
     environment:
       - TZ=$TIMEZONE
+    restart: always
 
   cadvisor:
     image: google/cadvisor
@@ -107,3 +111,4 @@ services:
       - 8082
     environment:
       - TZ=$TIMEZONE
+    restart: always
