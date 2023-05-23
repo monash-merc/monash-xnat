@@ -23,6 +23,7 @@ services:
       - $DATA_DIR/prearchive:${XNAT_ROOT}prearchive
       - $CINDER_DIR/webapps:/usr/local/tomcat/webapps
       - $CINDER_DIR/logs/tomcat:/usr/local/tomcat/logs
+      - $DATA_DIR/tomcat_tmp:/usr/local/tomcat/temp
       - ./tomcat/server.xml:/opt/tomcat/conf/server.xml
       - ./tomcat/tomcat-users.xml:/opt/tomcat/conf/tomcat-users.xml
       - ./tomcat/xnat-conf.properties:${XNAT_HOME}/config/xnat-conf.properties
