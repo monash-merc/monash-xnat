@@ -52,6 +52,20 @@ services:
       - POSTGRES_PASSWORD=password
     restart: always
 
+  xnat-backup:
+    build:
+      context: backup
+      dockerfile: Dockerfile
+    depends_on:
+      - xnat-db
+    links:
+      - xnat-db
+    environment:
+      SETUP_CRON: "0 3 * * *"
+    volumes:
+      - $BACKUP_DIR:/backups
+    restart: always
+
   xnat-nginx:
     build:
       context: nginx
