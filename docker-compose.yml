@@ -43,7 +43,7 @@ services:
       context: postgres
       dockerfile: Dockerfile
     expose:
-      - "5432"
+      - "5432:5432"
     volumes:
       - $CINDER_DIR/postgres:/var/lib/postgresql/data
       - /mnt/cinder/db_backups/xnat-backup-before-upgrade.out:/xnat-backup.out
@@ -100,7 +100,7 @@ services:
     restart: always
 
   cadvisor:
-    image: google/cadvisor
+    image: gcr.io/cadvisor/cadvisor
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:rw
