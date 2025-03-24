@@ -8,6 +8,7 @@ services:
         LOCALE: $LOCALE
         XNAT_ROOT: ${XNAT_ROOT}
         XNAT_HOME: ${XNAT_HOME}
+    container_name: "xnat-web"
     ports:
       - "8081:8080"
       - "8104:8104"
@@ -42,6 +43,7 @@ services:
     build:
       context: postgres
       dockerfile: Dockerfile
+    container_name: "xnat-db"
     expose:
       - "5432:5432"
     volumes:
@@ -56,6 +58,7 @@ services:
     build:
       context: backup
       dockerfile: Dockerfile
+    container_name: "xnat-backup"
     depends_on:
       - xnat-db
     links:
@@ -70,6 +73,7 @@ services:
     build:
       context: nginx
       dockerfile: Dockerfile
+    container_name: "xnat-nginx"
     ports:
       - "80:80"
       - "443:443"
@@ -91,6 +95,7 @@ services:
       - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml
     command:
       - '--config.file=/etc/prometheus/prometheus.yaml'
+    container_name: "prometheus"
     ports:
       - '9090:9090'
     links:
@@ -101,6 +106,7 @@ services:
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor
+    container_name: "cadvisor"
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:rw
