@@ -118,7 +118,7 @@ services:
     restart: always
 
   cadvisor:
-    image: google/cadvisor
+    image: gcr.io/cadvisor/cadvisor
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:rw
@@ -142,5 +142,6 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: 172.20.0.0/24
+        - subnet: 172.20.0.0/16
           gateway: 172.20.0.1
+          ip_range: 172.20.0.0/24
