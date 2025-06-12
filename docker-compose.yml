@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 services:
   xnat-web:
     build:
@@ -37,6 +37,8 @@ services:
       - CATALINA_OPTS=-Xms128m -Xmx4096m -Dxnat.home=${XNAT_HOME} -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000
       - XNAT_HOME=${XNAT_HOME}
       - TZ=$TIMEZONE
+    networks:
+      - xnat-static-network
     restart: always
 
   xnat-db:
@@ -54,6 +56,9 @@ services:
     environment:
       - TZ=$TIMEZONE
       - POSTGRES_PASSWORD=password
+    networks:
+      xnat-static-network:
+        ipv4_address: 172.20.1.2
     restart: always
 
   xnat-backup:
@@ -69,6 +74,8 @@ services:
       SETUP_CRON: "0 3 * * *"
     volumes:
       - $BACKUP_DIR:/backups
+    networks:
+      - xnat-static-network
     restart: always
 
   xnat-nginx:
@@ -89,6 +96,8 @@ services:
       - ./nginx/certs/cert.crt:/etc/nginx/certs/cert.crt
       - ./nginx/certs/key.key:/etc/nginx/certs/key.key
       - ./nginx/nginx-ssl.conf:/etc/nginx/nginx.conf
+    networks:
+      - xnat-static-network
     restart: always
 
   prometheus:
@@ -98,6 +107,8 @@ services:
     command:
       - '--config.file=/etc/prometheus/prometheus.yaml'
     container_name: "prometheus"
+    networks:
+      - xnat-static-network
     ports:
       - '9090:9090'
     links:
@@ -107,13 +118,15 @@ services:
     restart: always
 
   cadvisor:
-    image: gcr.io/cadvisor/cadvisor
-    container_name: "cadvisor"
+    image: google/cadvisor
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
+    container_name: "cadvisor"
+    networks:
+      - xnat-static-network
     ports:
       - "8082:8080"
     expose:
@@ -121,3 +134,13 @@ services:
     environment:
       - TZ=$TIMEZONE
     restart: always
+
+networks:
+  xnat-static-network:
+    name: xnat-static-network
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.0.0/24
+          gateway: 172.20.0.1
